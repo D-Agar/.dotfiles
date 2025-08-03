@@ -4,8 +4,8 @@
 -- Clear highlights on search when pressing <Esc> in normal mode
 --  See `:help hlsearch`
 vim.keymap.set("n", "<Esc>", "<cmd>nohlsearch<CR>")
-vim.keymap.set("n", "<leader>w", "<cmd>w<CR>")
-vim.keymap.set("n", "<leader>x", "<cmd>x<CR>")
+vim.keymap.set("n", "<leader>w", "<cmd>w<CR>", { desc = "Save file" })
+vim.keymap.set("n", "<leader>x", "<cmd>x<CR>", { desc = "Save and [X]it window" })
 
 vim.keymap.set("i", "kj", "<Esc>")
 
