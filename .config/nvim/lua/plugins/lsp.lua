@@ -13,6 +13,18 @@ return {
 			},
 		},
 	},
+	-- LSP in code cells/embedded code
+	{
+		"jmbuhr/otter.nvim",
+		dev = false,
+		dependencies = {
+			{
+				"neovim/nvim-lspconfig",
+				"nvim-treesitter/nvim-treesitter",
+			},
+		},
+		opts = {},
+	},
 	{
 		-- Main LSP Configuration
 		"neovim/nvim-lspconfig",
@@ -244,6 +256,22 @@ return {
 							},
 							-- You can toggle below to ignore Lua_LS's noisy `missing-fields` warnings
 							diagnostics = { disable = { "missing-fields" } },
+						},
+					},
+				},
+				pylsp = {
+					settings = {
+						pylsp = {
+							plugins = {
+								pyflakes = { enabled = false },
+								pycodestyle = { enabled = false },
+								autopep8 = { enabled = false },
+								yapf = { enabled = false },
+								mccabe = { enabled = false },
+								pylsp_mypy = { enabled = false },
+								pylsp_black = { enabled = false },
+								pylsp_isort = { enabled = false },
+							},
 						},
 					},
 				},
