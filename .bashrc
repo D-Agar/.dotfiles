@@ -149,10 +149,6 @@ if [[ -n "${ROS_DISTRO}" ]]; then
   alias setup='source install/local_setup.bash'
 fi
 
-# RoboAuto (Google DeepMind)
-# alias ann_topic_test="ros2 topic pub /ann_input std_msgs/msg/Float32MultiArray '{data: [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]}' --once"
-# alias ann="colcon build --packages-select robo_auto;setup;ros2 run robo_auto ann"
-
 # ONNX Runtime
 if [ -d "/opt/onnxruntime" ]; then
   export ONNXRUNTIME_DIR="/opt/onnxruntime" &&
@@ -177,3 +173,4 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+. "$HOME/.cargo/env"

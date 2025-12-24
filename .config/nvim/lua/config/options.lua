@@ -76,4 +76,9 @@ vim.o.scrolloff = 10
 -- See `:help 'confirm'`
 vim.o.confirm = true
 
+-- Use nerd font
+vim.g.have_nerd_font = true
 -- vim: ts=2 sts=2 sw=2 et
+--
+-- R development
+-- Use radian instead (bit better)

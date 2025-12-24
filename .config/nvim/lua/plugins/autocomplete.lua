@@ -29,7 +29,11 @@ return { -- Autocompletion
 			},
 			opts = {},
 		},
-		"folke/lazydev.nvim",
+		-- compatibility layer for nvim-cmp sources
+		"Saghen/blink.compat",
+
+		-- R-specific source (which is an nvim-cmp source)
+		"R-nvim/cmp-r",
 	},
 	--- @module 'blink.cmp'
 	--- @type blink.cmp.Config
@@ -75,6 +79,7 @@ return { -- Autocompletion
 		},
 
 		sources = {
+			compat = { "cmp_r" },
 			default = { "lsp", "path", "snippets", "lazydev" },
 			providers = {
 				lazydev = { module = "lazydev.integrations.blink", score_offset = 100 },
