@@ -1,9 +1,3 @@
-# If not running interactively, don't do anything
-case $- in
-*i*) ;;
-*) return ;;
-esac
-
 #### HISTORY ####
 # don't put duplicate lines or lines starting with space in the history.
 # See bash(1) for more options
@@ -50,34 +44,7 @@ esac
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
 # should be on the output of commands, not on the prompt
-# force_color_prompt=yes
-
-# if [ -n "$force_color_prompt" ]; then
-# if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-# We have color support; assume it's compliant with Ecma-48
-# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-# a case would tend to support setf rather than setaf.)
-# color_prompt=yes
-# else
-# color_prompt=
-# fi
-# fi
-
-# if [ "$color_prompt" = yes ]; then
-# PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-# else
-# PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-# fi
-# unset color_prompt force_color_prompt
-
-# If this is an xterm set the title to user@host:dir
-# case "$TERM" in
-# xterm*|rxvt*)
-# PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
-# ;;
-# *)
-# ;;
-# esac
+force_color_prompt=yes
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -112,6 +79,14 @@ fi
 [[ ":$PATH:" != *":/opt/nvim-linux-x86_64/bin:"* ]] && export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
 
 #### ALIASES ####
+alias update-kitty='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
+
+update-nvim() {
+  curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz &&
+    sudo rm -rf /opt/nvim-linux-x86_64 &&
+    sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz &&
+    rm nvim-linux-x86_64.tar.gz
+}
 
 # Configuration Customisation
 alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
@@ -123,54 +98,90 @@ alias icat="kitten icat"
 alias ll='ls -alF'
 alias la='ls -A'
 alias l='ls -CF'
+alias ls='ls -lah --color=auto --group-directories-first'
 
 # Navigation commands
 alias ..='cd .. && ls'         # Go up one level and list contents
 alias ...='cd ../.. && ls'     # Go up two levels and list
 alias ....='cd ../../.. && ls' # Go up three levels
 
+# Safer removal
+alias rm='rm -I --preserve-root'
+
+# Keep my files
+alias cp='cp -i'
+alias mv='mv -i'
+
+# Create parent directories
+alias mkdir='mkdir -p'
+
+# Update system
+alias update='sudo dnf update -y && sudo dnf upgrade -y'
+
 # Random commands
 # Add an "alert" alias for long running commands.
 # Use like so: sleep 10; alert
 alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
 
+# Stupid GlobalProtect
+alias globalprotect-kill="sudo pkill -9 -fi globalprotect"
+
 #### SOFTWARE SETUP ####
+source $HOME/.env
+
+# LazyGit
+alias lg='lazygit'
 
 # Neovim
-# export PATH="$PATH:/opt/nvim-linux-x86_64/bin"
+alias vim='nvim'
+export EDITOR="nvim"
+export VISUAL="$EDITOR"
 
-# University programs
-# alias savilerow='~/savilerow-1.10.1-linux/savilerow'
+# R development
+# required for V8 package
+export DOWNLOAD_STATIC_LIBV8=1
 
 # ROS2 Development - improved
-if [[ -n "${ROS_DISTRO}" ]]; then
-  source /opt/ros/humble/setup.bash || echo "Warning: ROS setup not found"
-  source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash || echo "Warning: colcon argcomplete not found"
-  alias setup='source install/local_setup.bash'
-fi
+# if [[ -n "${ROS_DISTRO}" ]]; then
+#   source /opt/ros/humble/setup.bash || echo "Warning: ROS setup not found"
+#   source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash || echo "Warning: colcon argcomplete not found"
+#   alias setup='source install/local_setup.bash'
+# fi
 
 # ONNX Runtime
-if [ -d "/opt/onnxruntime" ]; then
-  export ONNXRUNTIME_DIR="/opt/onnxruntime" &&
-    export LD_LIBRARY_PATH="$ONNXRUNTIME_DIR/lib:$LD_LIBRARY_PATH"
-fi
+# if [ -d "/opt/onnxruntime" ]; then
+#   export ONNXRUNTIME_DIR="/opt/onnxruntime" &&
+#     export LD_LIBRARY_PATH="$ONNXRUNTIME_DIR/lib:$LD_LIBRARY_PATH"
+# fi
 
 # Startship prompt
 eval "$(starship init bash)"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/daniel/anaconda3/bin/conda' 'shell.bash' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/daniel/miniconda3/bin/conda' 'shell.bash' 'hook' 2>/dev/null)"
 if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
+  eval "$__conda_setup"
 else
-    if [ -f "/home/daniel/anaconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/daniel/anaconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/home/daniel/anaconda3/bin:$PATH"
-    fi
+  if [ -f "/home/daniel/miniconda3/etc/profile.d/conda.sh" ]; then
+    . "/home/daniel/miniconda3/etc/profile.d/conda.sh"
+  else
+    export PATH="/home/daniel/miniconda3/bin:$PATH"
+  fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-. "$HOME/.cargo/env"
+# . "$HOME/.cargo/env"
+# source /usr/local/src/alacritty/extra/completions/alacritty.bash
+
+export PATH="${HOME}/bin/:$HOME/.local/bin:$PATH"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"                   # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion" # This loads nvm bash_completion
+
+# >>> Added by Spyder >>>
+alias spyder=/home/daniel/.local/spyder-6/envs/spyder-runtime/bin/spyder
+alias uninstall-spyder=/home/daniel/.local/spyder-6/uninstall-spyder.sh
+# <<< Added by Spyder <<<
