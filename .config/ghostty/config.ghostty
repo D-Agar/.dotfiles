@@ -5,6 +5,8 @@
 theme = "dark:Solarised Osaka Dark,light:Solarized Osaka Light"
 cursor-style = block
 cursor-style-blink = false
+background-opacity = 0.85
+background-blur-radius = 30
 
 gtk-titlebar = false
 
@@ -16,8 +18,21 @@ keybind = ctrl+plus=increase_font_size:1
 keybind = ctrl+minus=decrease_font_size:1
 keybind = ctrl+0=reset_font_size
 
+# Ligatures (!=→≠, =>→⇒, ->→→, >=→≥)
+font-feature = calt
+font-feature = liga
+
+# Window settings
+window-padding-x = 0
+window-padding-y = 0
+window-padding-balance = true
+window-padding-color = extend
+window-decoration = true
+window-theme = auto
+window-save-state = always
+
 # History
-scrollback-limit = 10000
+scrollback-limit = 100000
 
 # Clipboard
 # warns about dangerous pastes (e.g., commands with newlines)
@@ -28,8 +43,17 @@ copy-on-select = true
 mouse-hide-while-typing = true
 scrollbar = never
 
+# Note: In tmux with `set -g mouse on`, use Cmd+Shift+Click to open URLs
+# (plain Cmd+Click works outside tmux)
+
+# Keybinds
+keybind = ctrl+l=clear_screen
+# Panes
+keybind = super+shift+d=new_split:right
+keybind = super+d=new_split:down
+keybind = super+shift+enter=toggle_split_zoom
+
 # Prompt jumping
 keybind = ctrl+shift+up=jump_to_prompt:-1
 keybind = ctrl+shift+down=jump_to_prompt:1
 
-# Keybinds

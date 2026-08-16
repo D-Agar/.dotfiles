@@ -81,11 +81,28 @@ fi
 #### ALIASES ####
 alias update-kitty='curl -L https://sw.kovidgoyal.net/kitty/installer.sh | sh /dev/stdin'
 
-update-nvim() {
+function update-nvim() {
   curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux-x86_64.tar.gz &&
     sudo rm -rf /opt/nvim-linux-x86_64 &&
     sudo tar -C /opt -xzf nvim-linux-x86_64.tar.gz &&
     rm nvim-linux-x86_64.tar.gz
+}
+
+function update-yazi() {
+  wget -q https://github.com/sxyazi/yazi/releases/latest/download/yazi-x86_64-unknown-linux-gnu.zip &&
+    rm -rf ~/.local/yazi/ ~/.local/bin/yazi &&
+    unzip -q yazi-x86_64-unknown-linux-gnu.zip -d ~/.local/ &&
+    mv ~/.local/yazi-x86_64-unknown-linux-gnu/ ~/.local/yazi &&
+    ln -s ~/.local/yazi/yazi ~/.local/bin &&
+    rm -rf yazi-x86_64-unknown-linux-gnu.zip ~/.local/yazi-x86_64-unknown-linux-gnu/
+}
+function y() {
+  local tmp cwd
+  tmp="$(mktemp -t "yazi-cwd.XXXXXX")"
+  command yazi "$@" --cwd-file="$tmp"
+  IFS= read -r -d '' cwd <"$tmp"
+  [ "$cwd" != "$PWD" ] && [ -d "$cwd" ] && builtin cd -- "$cwd" || builtin true
+  command rm -f -- "$tmp"
 }
 
 # Configuration Customisation
