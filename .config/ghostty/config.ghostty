@@ -2,7 +2,7 @@
 # shell-integration is set to detect by default
 
 # Appearance
-theme = "dark:Solarised Osaka Dark,light:Solarized Osaka Light"
+theme = dark:Solarized Osaka Dark,light:Solarized Osaka Light
 cursor-style = block
 cursor-style-blink = false
 background-opacity = 0.85
@@ -47,7 +47,6 @@ scrollbar = never
 # (plain Cmd+Click works outside tmux)
 
 # Keybinds
-keybind = ctrl+l=clear_screen
 # Panes
 keybind = super+shift+d=new_split:right
 keybind = super+d=new_split:down
