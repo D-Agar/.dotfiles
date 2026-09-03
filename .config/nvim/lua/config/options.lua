@@ -15,9 +15,6 @@ vim.o.wrap = true
 vim.g.mkdp_echo_preview_url = 1
 vim.g.mkdp_browser = "flatpak run app.zen_browser.zen"
 
--- Point to the uv-managed tool environment for molten (pynvim)
-vim.g.python3_host_prog = vim.fn.exepath("pynvim")
-
 -- LaTeX options
 vim.g.vimtex_view_method = "sioyek"
 vim.g.vimtex_view_sioyek_exe = "/home/daniel/Applications/sioyek.appimage"
